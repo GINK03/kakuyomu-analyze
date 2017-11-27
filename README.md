@@ -10,3 +10,8 @@
 <p align="center">
   <img width="750px" src="https://user-images.githubusercontent.com/4949982/33275156-795a4ebe-d3d5-11e7-9d63-bd3c73b5c216.png">
 </p>
+
+## 作品ごとのタグごとの平均期待星の数
+<p align="center">
+  <img width="750px" src="https://user-images.githubusercontent.com/4949982/33275948-7402492e-d3d7-11e7-9471-fc8abdf730e9.png">
+</p>
