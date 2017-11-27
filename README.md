@@ -15,3 +15,8 @@
 <p align="center">
   <img width="750px" src="https://user-images.githubusercontent.com/4949982/33275948-7402492e-d3d7-11e7-9471-fc8abdf730e9.png">
 </p>
+
+## 継続期間(月) vs 平均星の数
+<p align="center">
+  <img width="750px" src="https://user-images.githubusercontent.com/4949982/33278689-aef082d2-d3df-11e7-876a-61cb06ab3abb.png">
+</p>
