@@ -30,6 +30,44 @@ if '--contents' in sys.argv:
     print( span.text )
     #print( content.text )
 
+if '--reviews' in sys.argv:
+  def _map1(names):
+    try:
+      for name in names:
+        if re.search(r'reviews.pkl.gz$', name) is None:
+          continue
+        print(name)
+        html, links = pickle.loads( gzip.decompress(open(name,'rb').read()) ) 
+        soup = bs4.BeautifulSoup(html)
+        work_title = soup.find('title').text.replace('のおすすめレビュー - カクヨム', '')
+        for index, art in enumerate(soup.find_all('article', {'class':'widget-workReview-review'})):
+          #print(art)
+          star = art.find('span').text
+          title = art.find('span', {'class':'widget-workReview-reviewTitleLabel'}).text
+          body = art.find('p', {'class':'widget-workReview-reviewBody'}).text
+          print('title', work_title)
+          print('star', star)
+          print('title', title)
+          print('body', body)
+          meta = {}
+          meta['star'] = star
+          meta['title'] = title
+          meta['body'] = re.sub(r'\s{1,}', ' ', body.replace('\n', ''))
+          open('./reviews/{}_{}.json'.format(work_title.replace('/', '_'), index), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) ) 
+    except Exception as ex:
+      print('Deep Exception', ex)
+
+  arrs = {} 
+  for index, name in enumerate(glob.glob('htmls/*')):
+    key = index%4
+    if arrs.get(key) is None:
+      arrs[key] = []
+    arrs[key].append(name)
+  arrs = [ v for k,v in arrs.items() ]
+  with concurrent.futures.ProcessPoolExecutor(max_workers=6) as exe:
+    exe.map(_map1, arrs)
+  #_map1(arrs[0])
+
 if '--time_persist' in sys.argv:
   def _map1(arr):
     try:
