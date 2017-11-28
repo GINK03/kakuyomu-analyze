@@ -18,7 +18,7 @@ import json
 
 def _map1(arr):
   index, url = arr
-  local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )
+  local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )[:128]
   if os.path.exists(local_name):
     return url, None, None, None
   print('now scraping', url)
@@ -35,6 +35,8 @@ def _map1(arr):
       
     if( req.status_code != 200 ):
       print('status code', req.status_code )
+      # fill error data
+      open(local_name, 'w').write( 'error' )
       return url, None, None, None
 
     soup = bs4.BeautifulSoup( req.text, 'lxml' )
@@ -51,7 +53,7 @@ def _map1(arr):
         continue
       _links.append( href )
       print(href)
-    local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )
+    local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )[:128]
     open(local_name,'wb').write( gzip.compress(pickle.dumps( (req.text, _links ) )) )
     print('normaly done, ', url)
     time.sleep(1.0)
@@ -85,7 +87,7 @@ def scrape():
         if html is None:
           continue # dbにも入れない
         links.remove(url)
-        open('finished/' + url.replace('/','_'), 'a' )
+        open('finished/' + url.replace('/','_')[:128], 'a' )
         for _link in _links:
           if os.path.exists('finished/' + url.replace('/','_')) is True:
             continue

@@ -39,5 +39,5 @@ for name in glob.glob('htmls/*'):
   meta['catch'] = catch
   meta['intro'] = intro
 
-  open('catchphrase_introduction/{}.json'.format(title.replace('/', '_')), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) )
+  open('catchphrase_introduction/{}.json'.format(title.replace('/', '_')), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False)[:128] )
   print('finished', name)
