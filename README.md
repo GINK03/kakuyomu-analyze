@@ -30,3 +30,8 @@
 <p align="center">
   <img width="750px" src="https://user-images.githubusercontent.com/4949982/33301209-df459c30-d437-11e7-9f43-6d7e2d087213.png">
 </p>
+
+## 作品ごとのブックマーク数
+<p align="center">
+  <img width="750px" src="https://user-images.githubusercontent.com/4949982/33324038-ae9ef8ec-d491-11e7-9a0c-fab7019a1517.png">
+</p>
