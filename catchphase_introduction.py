@@ -15,8 +15,9 @@ import re
 import json
 
 for name in glob.glob('htmls/*'):
-  save_name = 'finished/{}.finishe.catchphrase'.format(name.split('/').pop())
-  if os.paths.exists(save_name) is True:
+  save_name = 'finished/{}.finishe.catchphrase'.format(name.split('/').pop())[:128]
+  if os.path.exists(save_name) is True:
+    print('already process', name)
     continue
   
   open(save_name,'a')
@@ -39,3 +40,4 @@ for name in glob.glob('htmls/*'):
   meta['intro'] = intro
 
   open('catchphrase_introduction/{}.json'.format(title.replace('/', '_')), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) )
+  print('finished', name)
