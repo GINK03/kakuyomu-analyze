@@ -20,3 +20,8 @@
 <p align="center">
   <img width="750px" src="https://user-images.githubusercontent.com/4949982/33278689-aef082d2-d3df-11e7-876a-61cb06ab3abb.png">
 </p>
+
+## 平均投稿回数 vs 平均星の数
+<p align="center">
+  <img width="750px" src="https://user-images.githubusercontent.com/4949982/33300533-39f12464-d434-11e7-8675-ef8d5408ca75.png">
+</p>
