@@ -25,3 +25,8 @@
 <p align="center">
   <img width="750px" src="https://user-images.githubusercontent.com/4949982/33300533-39f12464-d434-11e7-8675-ef8d5408ca75.png">
 </p>
+
+## レビューの星の数のヒストグラム
+<p align="center">
+  <img width="750px" src="https://user-images.githubusercontent.com/4949982/33301209-df459c30-d437-11e7-9f43-6d7e2d087213.png">
+</p>
