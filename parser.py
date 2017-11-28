@@ -53,7 +53,10 @@ if '--reviews' in sys.argv:
           meta['star'] = star
           meta['title'] = title
           meta['body'] = re.sub(r'\s{1,}', ' ', body.replace('\n', ''))
-          open('./reviews/{}_{}.json'.format(work_title.replace('/', '_'), index), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) ) 
+          try:
+            open('./reviews/{}_{}.json'.format(work_title.replace('/', '_'), index), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) ) 
+          except Exception:
+            continue
     except Exception as ex:
       print('Deep Exception', ex)
 
@@ -73,19 +76,26 @@ if '--time_persist' in sys.argv:
     try:
       for name in arr:
         html, links = pickle.loads( gzip.decompress(open(name,'rb').read()) ) 
+        flag = 'flags/{}.time_persist'.format( name.split('/').pop() )[:128]
+        if os.path.exists(flag) is True:
+          continue
         soup = bs4.BeautifulSoup(html)
        
         title = soup.find('h1', {'id':'workTitle'})
+
         if title is None:
+          open(flag, 'a')
           continue
         if os.path.exists('stars-parsist/{}.json'.format(title.text)) is True:
           continue
 
         stars = soup.find('span', {'class':'js-total-review-point-element'})
         if stars is None:
+          open(flag, 'a')
           continue
 
         if soup.find('ul', {'id':'workMeta-tags'}) is None:
+          open(flag, 'a')
           continue
         tags = [li.text for li in soup.find('ul', {'id':'workMeta-tags'}).find_all('li') ]
         times = [re.split(r'[年|月|日]', time.text)[:-1] for time in soup.find_all('time', {'class':'widget-toc-episode-datePublished'}) ]
@@ -100,8 +110,12 @@ if '--time_persist' in sys.argv:
 
         persist = -1*(syear*12+smonth) + (eyear*12+emonth)
         print( title.text, stars.text, persist, start_time, last_time )
-        meta = {'title':title.text, 'stars':stars.text, 'persist':persist, 'start_time':start_time, 'last_time':last_time, 'tags':tags }
-        open('stars-parsist/{}.json'.format(title.text.replace('/','_')), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) )
+        meta = {'title':title.text, 'stars':stars.text, 'times':times,  'persist':persist, 'start_time':start_time, 'last_time':last_time, 'tags':tags }
+        try:
+          open('stars-parsist/{}.json'.format(title.text.replace('/','_')), 'w').write( json.dumps(meta, indent=2, ensure_ascii=False) )
+          open(flag, 'a')
+        except Exception:
+          continue
     except Exception as ex:
       print('Deep Exception', ex)
   arrs = {}
