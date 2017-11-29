@@ -26,12 +26,13 @@ def _map1(arr):
     headers = {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:56.0) Gecko/20100101 Firefox/56.0',
     }
-    #if random.random() < 0.5:
     proxy = proxys[index]
     print( proxy )
-    req = requests.get(url, headers=headers, proxies=proxy )
-    #else:
-    #req = requests.get(url, headers=headers )
+    try:
+      req = requests.get(url, headers=headers, proxies=proxy )
+    except Exception as ex:
+      print('request error', ex)
+      return url, None, None, None
       
     if( req.status_code != 200 ):
       print('status code', req.status_code )
