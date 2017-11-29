@@ -28,7 +28,7 @@ def _map(name):
     works.append( re.sub(r'\s{1,}', ' ', h4.text)  )
 
   print('finished', user)
-  open(f'user_works/{user}.json', 'w').write( json.dumps({'books':works}, indent=2, ensure_ascii=False) )
+  open(f'user_works/{user}.json', 'w').write( json.dumps({'works':works}, indent=2, ensure_ascii=False) )
 
 ps = []
 for name in glob.glob('htmls/*'):
