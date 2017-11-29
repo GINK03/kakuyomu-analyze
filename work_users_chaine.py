@@ -36,4 +36,8 @@ if '--relevancy' in sys.argv:
     _book_scores = { _book:_score/vmax for _book, _score in _book_scores.items() }
     book_book_score = {'book':book, 'vmax':vmax, 'book_scores':_book_scores}
     print(book_book_score)
-
+    try:
+      open('relevancy/{}.json'.format(book.replace('/','_'))[:100], 'w').write( json.dumps(book_book_score, indent=2, ensure_ascii=False) )
+    except:
+      continue
+    
