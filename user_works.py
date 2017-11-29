@@ -18,7 +18,10 @@ import sys
 def _map(arr):
   key, names = arr
   for name in names:
-    html, links = pickle.loads( gzip.decompress( open(name, 'rb').read() ))
+    try:
+      html, links = pickle.loads( gzip.decompress( open(name, 'rb').read() ))
+    except Exception:
+      continue
     soup = bs4.BeautifulSoup(html)
     
     user = soup.find('p', {'id': 'user-name-userId'})
