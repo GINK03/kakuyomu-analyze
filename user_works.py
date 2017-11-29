@@ -13,10 +13,9 @@ import json
 from multiprocessing import Process
 
 def _map(name):
-  print(name)
 
   html, links = pickle.loads( gzip.decompress( open(name, 'rb').read() ))
-  soup = bs4.BeautifulSoup(html)
+  soup = bs4.BeautifulSoup(html, 'lxml')
   
   user = soup.find('p', {'id': 'user-name-userId'})
   if user is None:
@@ -24,11 +23,12 @@ def _map(name):
   user = user.text
 
   works = []
-  for h4 in soup.find_all('h4'):
+  for h4 in soup.find_all('h4', {'class':'widget-workCatchphrase-title'}):
     works.append( re.sub(r'\s{1,}', ' ', h4.text)  )
 
+  print(name)
   print('finished', user)
-  open(f'user_works/{user}.json', 'w').write( json.dumps({'works':works}, indent=2, ensure_ascii=False) )
+  open(f'user_works/{user}.json', 'w').write( json.dumps({'user':user, 'works':works}, indent=2, ensure_ascii=False) )
 
 ps = []
 for name in glob.glob('htmls/*'):
@@ -37,7 +37,7 @@ for name in glob.glob('htmls/*'):
   p = Process(target=_map, args=(name,))
   p.start()
   ps.append(p)
-  if len(ps) > 16:
+  if len(ps) > 32:
     [p.join() for p in ps]
     ps = []
   
