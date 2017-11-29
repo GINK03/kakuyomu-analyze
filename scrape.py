@@ -15,7 +15,7 @@ import glob
 
 import random
 import json
-
+import re
 def _map1(arr):
   index, url = arr
   local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )[:128]
@@ -51,6 +51,7 @@ def _map1(arr):
         continue
       if 'https://kakuyomu.jp' not in href:
         continue
+      href = re.sub(r'\?.*?$', '', href)
       _links.append( href )
       print(href)
     local_name = 'htmls/{}.pkl.gz'.format( url.replace('/', '_') )[:128]
@@ -80,27 +81,23 @@ def scrape():
     if len(links) == 0:
       break
     arrs = [ (index%len(proxys), url) for index, url in enumerate(links) ]
-
-    _map1(arrs[0])
+  
+    links = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=3*len(proxys)) as exe:
       for url, html, _links, soup in exe.map( _map1, arrs):
         if html is None:
           continue # dbにも入れない
-        links.remove(url)
         open('finished/' + url.replace('/','_')[:128], 'a' )
         for _link in _links:
-          if os.path.exists('finished/' + url.replace('/','_')) is True:
+          _link = re.sub(r'\?.*?$', '', _link)
+          if os.path.exists('finished/' + _link.replace('/','_')) is True:
             continue
           print('find new link', _link)
           links.append( _link )
 
-    #time.sleep(0.1)
-    break
 
 def dump():
-
   # define sampling rate 
-  
   links = set()
   arrs = [(index, filename) for index, filename in enumerate(glob.glob('htmls/*'))]
   size = len(arrs)
@@ -132,6 +129,7 @@ def dump():
   
   saveLinks = []
   for link in links:
+    link = re.sub(r'\?.*?$', '', link)
     if link not in alreadies:
       saveLinks.append(link)
   print(saveLinks)
