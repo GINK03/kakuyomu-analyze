@@ -84,7 +84,7 @@ def scrape():
     arrs = [ (index%len(proxys), url) for index, url in enumerate(links) ]
   
     links = []
-    with concurrent.futures.ProcessPoolExecutor(max_workers=3*len(proxys)) as exe:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=len(proxys)) as exe:
       for url, html, _links, soup in exe.map( _map1, arrs):
         if html is None:
           continue # dbにも入れない
